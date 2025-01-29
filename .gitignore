@@ -398,3 +398,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+bin-arm64
+.*
+
+led_simulator.txt
