@@ -1,0 +1,40 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build (Debug)",
+            "command": "dotnet",
+            "type": "shell",
+            "args": [
+                "build",
+                "-c",
+                "Debug",
+                "src/service/trimui_sharp_led.fsproj"
+            ],
+            "windows": {
+                "command": "dotnet",
+                "args": [
+                    "build",
+                    "-c",
+                    "Debug",
+                    "src/service/trimui_sharp_led.fsproj"
+                ]
+            },
+            "options": {
+                "env": {
+                    "UpdateXlfOnBuild": "true"
+                }
+            },
+            "problemMatcher": "$msCompile",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Build (Release)",
+            "command": "./build.sh",
+            "problemMatcher": []
+        }
+    ]
+}

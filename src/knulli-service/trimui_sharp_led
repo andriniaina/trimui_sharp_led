@@ -1,0 +1,13 @@
+#!/bin/bash
+SERVICE_ROOT=/userdata/system/trimui_sharp_led
+chmod +x $SERVICE_ROOT/trimui_sharp_led
+
+case ${1} in
+start)
+    $SERVICE_ROOT/trimui_sharp_led &
+;;
+stop)
+    killall trimui_sharp_led
+    echo -n '000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 000000 ' > /sys/class/led_anim/frame_hex
+;;
+esac
