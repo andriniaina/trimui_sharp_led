@@ -55,8 +55,8 @@ let build_frames (config: INIAst.INIData, nb_steps) =
 [<EntryPoint>]
 let main args =
     printfn "----- START in %s -----" (AppContext.BaseDirectory)
-
-    let config = INIParser.readFile "trimui_sharp_led.ini" |> Option.get
+    let iniFile = sprintf "%s/trimui_sharp_led.ini" AppContext.BaseDirectory
+    let config = INIParser.readFile iniFile |> Option.get
 
     let NB_STEPS = INIExtr.fieldInt "settings" "NB_STEPS" config |> Option.defaultValue 60
     let FPS = INIExtr.fieldInt "settings" "FPS" config |> Option.defaultValue 30
