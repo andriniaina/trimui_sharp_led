@@ -17,14 +17,14 @@ let get_effect_function (config: INIAst.INIData, led_type) =
     | "left"
     | "right" ->
         match effect_name with
-        | "rainbow" -> memoize 1 frames_lr_rainbow
+        | "rainbow" -> frames_lr_rainbow
         | "battery" -> frames_lr_battery
         | "wipe" -> frames_lr_wipe
         | "nexus" -> frames_lr_nexus
         | _ -> raise (KeyNotFoundException(effect_name))
     | "middle" ->
         match effect_name with
-        | "rainbow" -> memoize 1 frames_m_rainbow
+        | "rainbow" -> frames_m_rainbow
         | "battery" -> frames_m_battery
         | _ -> raise (KeyNotFoundException(effect_name))
     | _ -> raise (KeyNotFoundException(led_type))
@@ -68,16 +68,15 @@ let main args =
     while true do
         let frames_hex = build_frames (config, NB_STEPS)
 
-        for _ = 1 to 20 * FPS / NB_STEPS do
-            for frame in frames_hex do
-                fp.Seek(0, SeekOrigin.Begin) |> ignore
+        for frame in frames_hex do
+            fp.Seek(0, SeekOrigin.Begin) |> ignore
 #if WRITE_BINARY
-                for i in frame do
-                    let bytes = BitConverter.GetBytes(i)
-                    fp.Write(bytes, 0, bytes.Length)
+            for i in frame do
+                let bytes = BitConverter.GetBytes(i)
+                fp.Write(bytes, 0, bytes.Length)
 #else
-                fp.Write(Encoding.ASCII.GetBytes(frame))
+            fp.Write(Encoding.ASCII.GetBytes(frame))
 #endif
-                System.Threading.Thread.Sleep(SLEEP_ms)
+            System.Threading.Thread.Sleep(SLEEP_ms)
 
     0

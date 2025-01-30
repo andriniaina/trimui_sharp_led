@@ -16,14 +16,14 @@ let frames_rainbow (nb_steps) =
             (hue_start, s, v) |> toRGB |> toHex
     ]
 
-let frames_m_rainbow (nb_steps) =
+let _frames_m_rainbow (nb_steps) =
 #if WRITE_BINARY
     [ frames_rainbow (nb_steps) ]
 #else
     frames_rainbow (nb_steps)
 #endif
 
-let frames_lr_rainbow (nb_steps) =
+let _frames_lr_rainbow (nb_steps) =
     let colors_rgb_hex = frames_rainbow (nb_steps)
 
     let frames_hex =
@@ -38,3 +38,6 @@ let frames_lr_rainbow (nb_steps) =
         ]
 
     frames_hex
+
+let frames_lr_rainbow = memoize 2 _frames_lr_rainbow
+let frames_m_rainbow = memoize 2 _frames_m_rainbow
