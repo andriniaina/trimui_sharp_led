@@ -13,22 +13,23 @@ let NB_LEDS_STICK = 11
 let shift(x, array:'a list) = 
     let size = array.Length
     [
-        for i in 0 .. size do
-        array[(i+x) % size]
+        for i in 0 .. size-1 do
+        array[(i+x+size) % size]
     ]
 
 let shift_and_sample(arr: list<'t>, start:int, n: int) =
+    let n_f = float n
     let start_f = float start
     let size = float arr.Length
-    let step_f = size / float n
-    [ for i = 0.0 to n do arr[int((start_f + (i * step_f)) % size)]]
+    let step_f = size / n_f
+    [ for i = 0.0 to n_f-1.0 do arr[int((start_f + (i * step_f)) % size)]]
 
 let private read_battery_capacity() =
     let CAPACITY_FILENAME = "/sys/class/power_supply/axp2202-battery/capacity"
     if File.Exists(CAPACITY_FILENAME) then
         File.ReadAllText(CAPACITY_FILENAME).Trim() |> int
     else
-        40 // fake
+        0 // fake
 
 let get_ttl_hash (seconds) =
     let t = DateTime.UtcNow - new DateTime(1970, 1, 1);
@@ -48,7 +49,8 @@ let frames_m_battery(nb_steps) =
 
 let _frames_lr_battery(nb_steps, ttl_hash:float)=
     let capacity = read_battery_capacity() |> double
-    let capacity_index = Math.Floor(capacity / 100.0 * double NB_LEDS_STICK) |> int
+    // -1 for a more dramatic effect
+    let capacity_index = Math.Floor(capacity / 100.0 * double NB_LEDS_STICK) - 1.0 |> int
     let h_GREEN = 130.0
     let hex = toRGB(h_GREEN / 360.0, 1, 1) |> toHex
     let frame = [for _ in 0..capacity_index do hex]  @ [for _ in 0 .. (NB_LEDS_STICK - capacity_index) do "330000 "]
@@ -65,7 +67,7 @@ let frames_rainbow(nb_steps) =
     let v = 1.0
     let step = 1./float nb_steps
     [
-        for hue_start in 0.0..step..1.0 do
+        for hue_start in 0.0..step..1.0-step do
         (hue_start,s,v) |> toRGB |> toHex
     ]
 
@@ -79,7 +81,7 @@ let frames_m_rainbow(nb_steps) =
 let frames_lr_rainbow(nb_steps) =
     let colors_rgb_hex = frames_rainbow(nb_steps)
     let frames_hex = [
-        for i in 0..nb_steps do
+        for i in 0..nb_steps-1 do
         (shift_and_sample (colors_rgb_hex, i, NB_LEDS_STICK)
         #if WRITE_BINARY
         #else
@@ -100,15 +102,16 @@ let private _frames_lr_wipe(nb_steps, ttl_hash:float)=
     let rgb2 = toRGB(hue2,s,v)
 
     let halfway = nb_steps / 2
-    [
-    for i in 0..nb_steps do
-        let r = if i < halfway then  NB_LEDS_STICK * i / halfway else  NB_LEDS_STICK - NB_LEDS_STICK * (i-halfway) / halfway
-        //somehow, it renders better if the N last leds are full white
-        //let frame = [for j in range(NB_LEDS_STICK) do if j>8 then (255uy,255uy,255uy) elif j < r then rgb1 else rgb2 ]
-        let frame = [for j in 0..NB_LEDS_STICK do if j < r then rgb1 else rgb2 ]
-        let frame = shift(-2, frame) // because my LEDs are shifted.... Trimui QA...
-        String.Join("", frame |> List.map toHex)
+    let frame = [
+        for i in 0..nb_steps-1 do
+            let r = if i < halfway then  NB_LEDS_STICK * i / halfway else  NB_LEDS_STICK - NB_LEDS_STICK * (i-halfway) / halfway
+            //somehow, it renders better if the N last leds are full white
+            //let frame = [for j in range(NB_LEDS_STICK) do if j>8 then (255uy,255uy,255uy) elif j < r then rgb1 else rgb2 ]
+            let frame = [for j in 0..NB_LEDS_STICK-1 do if j < r then rgb1 else rgb2 ]
+            let frame = shift(2, frame) // because my LEDs are shifted.... Trimui QA...
+            String.Join("", frame |> List.map toHex)
     ]
+    frame
 
 let private frames_lr_wipe_memoized =
     memoize 2 _frames_lr_wipe

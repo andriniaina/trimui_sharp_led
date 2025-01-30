@@ -400,3 +400,4 @@ FodyWeavers.xsd
 *.sln.iml
 bin-arm64
 .*
+led_simulator.txt
