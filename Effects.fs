@@ -50,10 +50,10 @@ let frames_m_battery(nb_steps) =
 let _frames_lr_battery(nb_steps, ttl_hash:float)=
     let capacity = read_battery_capacity() |> double
     // -1 for a more dramatic effect
-    let capacity_index = Math.Floor(capacity / 100.0 * double NB_LEDS_STICK) - 1.0 |> int
+    let capacity_index = Math.Floor(capacity / 100.0 * double NB_LEDS_STICK) |> int
     let h_GREEN = 130.0
     let hex = toRGB(h_GREEN / 360.0, 1, 1) |> toHex
-    let frame = [for _ in 0..capacity_index do hex]  @ [for _ in 0 .. (NB_LEDS_STICK - capacity_index) do "330000 "]
+    let frame = [for _ in 0..capacity_index-1 do hex]  @ [for _ in 0 .. (NB_LEDS_STICK - capacity_index-1) do "550000 "]
     let frame_adjusted = String.Join("",shift(-1, frame))
     List.init nb_steps (fun _->frame_adjusted)
 
@@ -94,8 +94,8 @@ let frames_lr_rainbow(nb_steps) =
 
 let private _frames_lr_wipe(nb_steps, ttl_hash:float)=
     let s = 1
-    let hue1 = Random.Shared.NextDouble()
     let v = 1
+    let hue1 = Random.Shared.NextDouble()
     let hue2 = (hue1 + 0.5) % 1.0
 
     let rgb1 = toRGB(hue1, s, v)
@@ -108,10 +108,13 @@ let private _frames_lr_wipe(nb_steps, ttl_hash:float)=
             //somehow, it renders better if the N last leds are full white
             //let frame = [for j in range(NB_LEDS_STICK) do if j>8 then (255uy,255uy,255uy) elif j < r then rgb1 else rgb2 ]
             let frame = [for j in 0..NB_LEDS_STICK-1 do if j < r then rgb1 else rgb2 ]
-            let frame = shift(2, frame) // because my LEDs are shifted.... Trimui QA...
+            let frame = shift(1, frame) // because my LEDs are shifted.... Trimui QA...
             String.Join("", frame |> List.map toHex)
     ]
     frame
+
+let frames_lr_nexus(nb_steps) =
+
 
 let private frames_lr_wipe_memoized =
     memoize 2 _frames_lr_wipe
