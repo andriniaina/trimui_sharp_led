@@ -4,20 +4,7 @@ open System.IO
 open FS.INIReader
 open System.Text
 open Effects
-
-
-let memoize f =
-    let dict = Dictionary<_, _>()
-
-    fun c ->
-        let exist, value = dict.TryGetValue c
-
-        match exist with
-        | true -> value
-        | _ ->
-            let value = f c
-            dict.Add(c, value)
-            value
+open Memoizer
 
 
 let get_effect_function (config: INIAst.INIData, led_type) =
@@ -27,11 +14,14 @@ let get_effect_function (config: INIAst.INIData, led_type) =
     | "left"
     | "right" ->
         match effect_name with
-        | "rainbow" -> memoize frames_lr_rainbow
+        | "rainbow" -> memoize 1 frames_lr_rainbow
+        | "battery" -> frames_lr_battery
+        | "wipe" -> frames_lr_wipe
         | _ -> raise (KeyNotFoundException(effect_name))
     | "middle" ->
         match effect_name with
-        | "rainbow" -> memoize frames_m_rainbow
+        | "rainbow" -> memoize 1 frames_m_rainbow
+        | "battery" -> frames_m_battery
         | _ -> raise (KeyNotFoundException(effect_name))
     | _ -> raise (KeyNotFoundException(led_type))
 
