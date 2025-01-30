@@ -6,10 +6,15 @@
     <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ArrayTools.fs" />
     <Compile Include="Memoizer.fs" />
     <Compile Include="FS.INIReader.fs" />
     <Compile Include="ColorConverter.fs" />
-    <Compile Include="Effects.fs" />
+    <Compile Include="Constants.fs" />
+    <Compile Include="Effects.Rainbow.fs" />
+    <Compile Include="Effects.Battery.fs" />
+    <Compile Include="Effects.Wipe.fs" />
+    <Compile Include="Effects.Nexus.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>

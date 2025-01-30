@@ -3,7 +3,10 @@ open System.Collections.Generic
 open System.IO
 open FS.INIReader
 open System.Text
-open Effects
+open Effects.Battery
+open Effects.Nexus
+open Effects.Rainbow
+open Effects.Wipe
 open Memoizer
 
 
