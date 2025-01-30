@@ -33,13 +33,14 @@ let build_frames (config: INIAst.INIData, nb_steps) =
     let frames_hex_m = get_effect_function (config, "middle") (nb_steps)
 
     let frames_hex =
-        [ for frame_m, frame_l, frame_r in Seq.zip3 frames_hex_m frames_hex_l frames_hex_r do
+        [
+            for frame_m, frame_l, frame_r in Seq.zip3 frames_hex_m frames_hex_l frames_hex_r do
 #if WRITE_BINARY
-              List.concat [ frame_m; frame_l; frame_r ]
+                List.concat [ frame_m; frame_l; frame_r ]
 #else
-              frame_m + frame_l + frame_r
+                frame_m + frame_l + frame_r
 #endif
-          ]
+        ]
 
     frames_hex
 
