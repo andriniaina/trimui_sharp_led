@@ -17,6 +17,7 @@ let get_effect_function (config: INIAst.INIData, led_type) =
         | "rainbow" -> memoize 1 frames_lr_rainbow
         | "battery" -> frames_lr_battery
         | "wipe" -> frames_lr_wipe
+        | "nexus" -> frames_lr_nexus
         | _ -> raise (KeyNotFoundException(effect_name))
     | "middle" ->
         match effect_name with

@@ -12,9 +12,10 @@ let NB_LEDS_STICK = 11
 
 let shift(x, array:'a list) = 
     let size = array.Length
+    let x = x % size
     [
         for i in 0 .. size-1 do
-        array[(i+x+size) % size]
+        array[(i-x+size) % size]
     ]
 
 let shift_and_sample(arr: list<'t>, start:int, n: int) =
@@ -54,7 +55,7 @@ let _frames_lr_battery(nb_steps, ttl_hash:float)=
     let h_GREEN = 130.0
     let hex = toRGB(h_GREEN / 360.0, 1, 1) |> toHex
     let frame = [for _ in 0..capacity_index-1 do hex]  @ [for _ in 0 .. (NB_LEDS_STICK - capacity_index-1) do "550000 "]
-    let frame_adjusted = String.Join("",shift(-1, frame))
+    let frame_adjusted = String.Join("",shift(1, frame))
     List.init nb_steps (fun _->frame_adjusted)
 
 let private frames_lr_battery_memoized = memoize 2 _frames_lr_battery
@@ -113,11 +114,24 @@ let private _frames_lr_wipe(nb_steps, ttl_hash:float)=
     ]
     frame
 
-let frames_lr_nexus(nb_steps) =
-
-
 let private frames_lr_wipe_memoized =
     memoize 2 _frames_lr_wipe
 
 let frames_lr_wipe(nb_steps) =
     frames_lr_wipe_memoized(nb_steps, get_ttl_hash(30)) // refresh every 30s
+
+let _frames_lr_nexus(nb_steps, ttl_hash:float) =
+    let leds_index_on = [0;Random.Shared.Next(NB_LEDS_STICK-1);Random.Shared.Next(NB_LEDS_STICK-1)]
+    let leds = [for i in 0..NB_LEDS_STICK-1 do if List.contains i leds_index_on then "FFFFFF " else "000000 "]
+    let halfway = nb_steps / 2
+    let frames = [
+        for i in 0..nb_steps-1 do
+            let frame = if i<halfway then shift(i/4, leds) else shift((nb_steps-i)/4, leds) // FIXME
+            String.Join("", frame)
+    ]
+    frames
+let frames_lr_nexus_memoized =
+    memoize 2 _frames_lr_nexus
+
+let frames_lr_nexus(nb_steps) =
+    frames_lr_nexus_memoized (nb_steps, get_ttl_hash (30))
