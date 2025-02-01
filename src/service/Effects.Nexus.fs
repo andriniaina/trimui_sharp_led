@@ -22,8 +22,9 @@ let _frames_lr_nexus (nb_steps, ttl_hash: float) =
 
     let frames = [
         for i in 0 .. nb_steps - 1 do
-            let frame = if i < halfway then shift (i / 4, frame_initial) else shift ((nb_steps - i) / 4, frame_initial) // FIXME
-            String.Join("", frame)
+            let shift_index = if i < halfway then i / 4 else (nb_steps - i) / 4
+            let frame = frame_initial |> shift shift_index
+            frame |> String.concat ""
     ]
 
     frames

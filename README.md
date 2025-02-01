@@ -17,7 +17,7 @@ Installation on knulli
 1. Download a [release](https://github.com/andriniaina/trimui_sharp_led/releases/latest)
 2. Unzip and copy to `/userdata/system/`. You should have folders named /userdata/system/services and /userdata/system/trimui_sharp_led
 3. Modify `trimui_sharp_led.ini`
-4. Go to `System Settings > Services`, disable all other LED services, enable the service TRIMUI_SHARP_LED
+4. Go to `System Settings > Services`, disable all other LED services, enable the service TRIMUI_SHARP_LED, reboot (?)
 
 Configuration
 =======

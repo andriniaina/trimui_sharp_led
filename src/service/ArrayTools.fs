@@ -1,7 +1,7 @@
 [<AutoOpen>]
 module ArrayTools
 
-let shift (x, array: 'a list) =
+let shift (x) (array: 'a list) =
     let size = array.Length
     let x = x % size
 

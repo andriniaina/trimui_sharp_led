@@ -29,8 +29,10 @@ let private _frames_lr_wipe (nb_steps, ttl_hash: float) =
                     if j < r then rgb1 else rgb2
             ]
 
-            let frame = shift (-2, frame) // because my LEDs are shifted.... Trimui QA...
-            String.Join("", frame |> List.map toHex)
+            frame
+                |> shift -2 // because my LEDs are shifted.... Trimui QA...
+                |> Seq.map toHex
+                |> String.concat ""
     ]
 
     frame

@@ -24,7 +24,7 @@ let _frames_lr_rainbow (nb_steps) =
 
     let frames_hex = [
         for i in 0 .. nb_steps - 1 do
-            shift_and_sample (colors_rgb_hex, i, NB_LEDS_STICK) |> List.map toHex |> String.concat ""
+            shift_and_sample (colors_rgb_hex, i, NB_LEDS_STICK) |> Seq.map toHex |> String.concat ""
     ]
 
     frames_hex

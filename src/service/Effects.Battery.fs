@@ -33,7 +33,7 @@ let _frames_lr_battery (nb_steps, ttl_hash: float) =
             "550000 "
     ]
 
-    let frame_adjusted = String.Join("", shift (1, frame))
+    let frame_adjusted = frame |> shift 1 |> String.concat ""
     List.init nb_steps (fun _ -> frame_adjusted)
 
 let private frames_battery_memoized = memoize 2 (_frames_battery)
