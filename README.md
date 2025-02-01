@@ -1,3 +1,6 @@
+LED controller for TSP+Knulli
+======
+
 This is my take on yet another LED controller for Trimui Smart Pro, focused on performance.
 
 I got tired of seeing the other alternatives out there taking around ~4-5% of a CPU core, which I consider unacceptable just to switch up some dumb lights. Even more so that most are written in C.
@@ -33,3 +36,8 @@ Left and Right sticks:
 Middle:
  * rainbow
  * battery
+
+Video
+======
+
+https://imgur.com/a/fLNOBTy
