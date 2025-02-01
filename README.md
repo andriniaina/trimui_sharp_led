@@ -27,7 +27,7 @@ Configuration
 
 ## Supported effect names:
 
-Left and Right sticks:
+Left or Right sticks (can be configured separately) :
  * rainbow: spinning color wheel
  * battery: show remaining battery percentage in a circle
  * nexus: spins randomly 3 LEDs
