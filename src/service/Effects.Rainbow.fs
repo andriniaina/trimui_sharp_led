@@ -17,7 +17,7 @@ let frames_rainbow (nb_steps) =
     ]
 
 let _frames_m_rainbow nb_steps = 
-    [frames_rainbow nb_steps |> List.head |> toHex]
+    frames_rainbow nb_steps |> List.map toHex
 
 let _frames_lr_rainbow (nb_steps) =
     let colors_rgb_hex = frames_rainbow (nb_steps)

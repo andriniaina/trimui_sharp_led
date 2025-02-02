@@ -56,7 +56,7 @@ let build_effect_function (config: INIAst.INIData, led_type) =
         | "battery" -> frames_m_battery
         | _ as v ->
             printfn "Wrong value %s for %s" v led_type_name
-            frames_lr_nexus // raise (KeyNotFoundException(effect_name))
+            frames_m_rainbow // raise (KeyNotFoundException(effect_name))
     | _ -> raise (KeyNotFoundException(led_type))
 
 
@@ -89,6 +89,11 @@ let toBuffer (m:string,l:string,r:string) buffer=
     ASCII.GetBytes(r,0,r.Length,buffer,INDEX_R)  |> ignore
     buffer
 
+let reinitializeLeds() =
+    if File.Exists "/sys/class/led_anim/max_scale" then
+        use device = new FileStream("/sys/class/led_anim/max_scale", FileMode.OpenOrCreate, FileAccess.Write)
+        device.Write(ASCII.GetBytes("14"))
+
 [<EntryPoint>]
 let main args =
     printfn "----- Started in %s -----" (AppContext.BaseDirectory)
@@ -104,10 +109,12 @@ let main args =
     let mutable frames_hex = build_frames(config)
     use watcher = new FileSystemWatcher(Path.GetDirectoryName(iniFile), "*.ini", EnableRaisingEvents = true)
     watcher.Changed.Add(fun _ -> 
+        reinitializeLeds ()
         config <- readConfig iniFile
         frames_hex <- build_frames(config)
     )
 
+    reinitializeLeds ()
     while true do
         frames_hex <- build_frames(config)
         for _ in 1..5 do

@@ -9,7 +9,7 @@
                 "build",
                 "-c",
                 "Debug",
-                "src/service/trimui_sharp_led.fsproj"
+                "src/trimui_sharp_led.sln"
             ],
             "windows": {
                 "command": "dotnet",
@@ -17,7 +17,7 @@
                     "build",
                     "-c",
                     "Debug",
-                    "src/service/trimui_sharp_led.fsproj"
+                    "src/trimui_sharp_led.sln",
                 ]
             },
             "options": {
