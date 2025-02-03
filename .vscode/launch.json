@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "Build (Debug)",
-            "program": "${workspaceFolder}/src/service/bin/Debug/net8.0/trimui_sharp_led.dll",
+            "program": "${workspaceFolder}/src/service/bin/Debug/net9.0/trimui_sharp_led.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
