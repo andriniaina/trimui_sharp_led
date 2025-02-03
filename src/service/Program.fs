@@ -9,6 +9,7 @@ open Effects.Rainbow
 open Effects.Wipe
 open Memoizer
 open ColorConversion
+open Effects.Dynamic
 
 let ASCII = Encoding.ASCII
 
@@ -47,6 +48,7 @@ let build_effect_function (config: INIAst.INIData, led_type) =
         | "battery" -> frames_lr_battery
         | "wipe" -> frames_lr_wipe
         | "nexus" -> frames_lr_nexus
+        | "dynamic" -> frames_dynamic_lr
         | _ as v ->
             printfn "Wrong value %s for %s" v led_type_name
             frames_lr_nexus // raise (KeyNotFoundException(effect_name))
@@ -117,7 +119,6 @@ let main args =
     reinitializeLeds ()
     while true do
         frames_hex <- build_frames(config)
-        for _ in 1..5 do
         for m_l_r in frames_hex do
             device.Seek(0, SeekOrigin.Begin) |> ignore
             device.Write(toBuffer m_l_r buffer)

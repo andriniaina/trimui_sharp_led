@@ -18,7 +18,7 @@ let private _frames_lr_wipe (nb_steps, ttl_hash: float) =
 
     let halfway = nb_steps / 2
 
-    let frame = [
+    let frames = [
         for i in 0 .. nb_steps - 1 do
             let r = if i < halfway then NB_LEDS_STICK * i / halfway else NB_LEDS_STICK - NB_LEDS_STICK * (i - halfway) / halfway
 
@@ -35,7 +35,7 @@ let private _frames_lr_wipe (nb_steps, ttl_hash: float) =
                 |> String.concat ""
     ]
 
-    frame
+    frames
 
 let private frames_lr_wipe_memoized = memoize 2 (_frames_lr_wipe)
 
