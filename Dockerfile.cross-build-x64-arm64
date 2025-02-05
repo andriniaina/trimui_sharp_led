@@ -1,4 +1,4 @@
 FROM mcr.microsoft.com/dotnet-buildtools/prereqs:azurelinux-3.0-net9.0-cross-arm64
 COPY --from=mcr.microsoft.com/dotnet/sdk:9.0-azurelinux3.0-amd64 /usr/share/dotnet /usr/share/dotnet
-RUN ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
+#RUN ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet
 ENV DOTNET_NOLOGO=true
