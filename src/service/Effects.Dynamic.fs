@@ -3,8 +3,7 @@ open ColorConversion
 open System
 
 let string_join = String.concat ""
-let frames_dynamic (previous_frame:string list) (nb_steps:int) =
-    let S = 0.7
+let frames_dynamic S (previous_frame:string list) (nb_steps:int) =
     let nb_leds =  previous_frame.Length
     let random_color (_) = toHex (toRGB (Random.Shared.NextDouble(), S, 1))
     let indexes_infinite = seq {
@@ -26,10 +25,11 @@ let frames_dynamic (previous_frame:string list) (nb_steps:int) =
         |> List.ofSeq
     frames
     
-let frames_dynamic_lr =
+let frames_dynamic_lr (args:Map<string,string>) =
+    let S= match Map.tryFind "saturation" args with | Some(v) -> double v | _ -> 1.0
     let mutable previous_frame = Array.create NB_LEDS_STICK COLOR_BLACK_HEX |> List.ofArray
     fun nb_steps ->
-        let frames = frames_dynamic previous_frame nb_steps
+        let frames = frames_dynamic S previous_frame nb_steps
         previous_frame <- List.last frames
         frames |> (List.map string_join)
 

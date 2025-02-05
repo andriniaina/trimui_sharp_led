@@ -4,7 +4,7 @@ open System
 open Xunit
 open Effects.Battery
 open Effects.Rainbow
-open Effects.Dynamic
+open Effects.Dynamic_interpolated
 open ColorConversion
 
 [<Fact>]
@@ -23,8 +23,8 @@ let ``test Effects.Rainbow frames`` () =
 [<Fact>]
 let ``test Effects.Dynamic frames`` () =
     let nb_frames = 10
-    let previous_frame = Array.create NB_LEDS_STICK COLOR_BLACK_HEX |> List.ofArray
-    let frames1 = frames_dynamic  previous_frame nb_frames
+    let previous_frame = Array.create NB_LEDS_STICK 0.0 |> List.ofArray
+    let frames1 = frames_dynamic_hues 6 previous_frame nb_frames
     Assert.Equal (frames1[0].Length, NB_LEDS_STICK)
     Assert.Equal (frames1.Length, nb_frames)
     

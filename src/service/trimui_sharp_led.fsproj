@@ -15,6 +15,7 @@
     <Compile Include="Effects.Battery.fs" />
     <Compile Include="Effects.Wipe.fs" />
     <Compile Include="Effects.Nexus.fs" />
+    <Compile Include="Effects.Dynamic_interpolated.fs" />
     <Compile Include="Effects.Dynamic.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

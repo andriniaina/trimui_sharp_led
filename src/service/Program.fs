@@ -10,6 +10,7 @@ open Effects.Wipe
 open Memoizer
 open ColorConversion
 open Effects.Dynamic
+open Effects.Dynamic_interpolated
 
 let ASCII = Encoding.ASCII
 
@@ -39,6 +40,8 @@ type Config = {
 let build_effect_function (config: INIAst.INIData, led_type) =
     let led_type_name = led_type.ToString()
     let effect_name = INIExtr.fieldString (led_type.ToString()) "effect_name" config |> Option.defaultValue "rainbow"
+    let extract_args (s:string) =
+        s.Split("&") |> Array.tail |> Array.map _.Split(":") |> Array.map (fun x -> (x.[0],x.[1])) |> Map.ofArray
 
     match led_type with
     | LED_TYPE.LEFT
@@ -48,7 +51,8 @@ let build_effect_function (config: INIAst.INIData, led_type) =
         | "battery" -> frames_lr_battery
         | "wipe" -> frames_lr_wipe
         | "nexus" -> frames_lr_nexus
-        | "dynamic" -> frames_dynamic_lr
+        | mode when mode.StartsWith("dynamic") -> frames_dynamic_lr (extract_args mode)
+        | mode when mode.StartsWith("dynamic_interpolated") -> frames_dynamic_interpolated_lr (extract_args mode)
         | _ as v ->
             printfn "Wrong value %s for %s" v led_type_name
             frames_lr_nexus // raise (KeyNotFoundException(effect_name))

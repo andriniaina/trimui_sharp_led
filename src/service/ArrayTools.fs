@@ -1,6 +1,14 @@
 [<AutoOpen>]
 module ArrayTools
 
+
+let interpolate (n:int) (a) (b) =
+    let n_f = (b-a)/float n
+    seq {
+        for x in a..n_f..b do x
+    }
+
+
 let shift (x) (array: 'a list) =
     let size = array.Length
     let x = x % size
