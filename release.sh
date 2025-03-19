@@ -2,13 +2,13 @@
 
 rm -rf release
 
-mkdir -p release/services
-mkdir -p release/trimui_sharp_led
+SYSTEM=release/userdata/system
+mkdir -p $SYSTEM/services
+mkdir -p $SYSTEM/trimui_sharp_led
 
-cp src/service/bin-arm64/* release/trimui_sharp_led
-rm release/trimui_sharp_led/*.dbg
+cp src/service/bin-arm64/* $SYSTEM/trimui_sharp_led
+rm $SYSTEM/trimui_sharp_led/*.dbg
 
-cp src/knulli-service/* release/services
+cp src/knulli-service/* $SYSTEM/services
 
 cd release
-zip -r trimui_sharp_led-release.zip services trimui_sharp_led
